@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Raspberry Pi 开机与设置 - When Go meets Raspberry Pi</title>
+    
+    <meta name="author" content="dqylyln">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+
+    <link rel="shortcut icon" href="http://tp2.sinaimg.cn/1166630101/50/40003509422/1">
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/" style="padding-left:46px;">dqylyln</a>
+            <ul class="nav">
+                
+                
+
+
+  <li><a href="/posts">Blogs</a></li>
+
+
+                
+                
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+                
+                
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+                
+                
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+                
+                
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+                
+                
+
+
+  <li><a href="/about">About Me</a></li>
+
+
+                
+                <li style="padding-left:10px">
+                    <form class="navbar-search pull-right" method="GET" action="https://www.google.com/search">
+                        <input type="text" name="as_q" class="search-query" placeholder=" Search... ">
+                        <input type="hidden" name="as_sitesearch" value="dqylyln.dyndns.org">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="content">
+        <div class="page-header">
+    <h1>Raspberry Pi 开机与设置 
+    </h1>
+</div>
+
+<div class="row">
+    <div class="span8">
+        <h1>硬件需求</h1>
+
+<p>1.Pi主机一个</p>
+
+<p>2.Pi支持的SD卡或者TF卡+SD卡套
+（Pi对于SD卡是有要求的，某些品牌和型号的SD卡无法引导）<br/>
+详见：<a href="http://pan.baidu.com/share/link?shareid=173551&amp;uk=1529595879">SD卡支持列表</a></p>
+
+<p>3.USB键盘和鼠标</p>
+
+<p>4.支持视频或者HDMI的显示器或者电视机 (安装好系统配置后就没什么用，除非你用Pi做桌面工作环境)</p>
+
+<p>5.5V 500mh的Micro USB充电器一个</p>
+
+<h1>启动SD卡制作</h1>
+
+<p>Pi使用的SD卡可以看做是它的硬盘，系统是是安装到SD卡上的。</p>
+
+<p>1.到<a href="http://www.raspberrypi.org/downloads">www.raspberrypi.org</a>下载系统镜像
+可选择的系统镜像有Raspbian，Arch Linux ARM RISC OS等，经过网友测试Raspbian “wheezy”
+貌似现在性能比较好。</p>
+
+<p>2.利用PC将下载解压后的img文件写入到SD卡中，不同的PC平台写入方法不同<br/>
+MAC为例：利用DD工具</p>
+
+<ul>
+<li><p>插入卡 Raspberry Pi 使用手册 在终端窗口中输入”df –h”您会发现多了 一个“/dev/disk1s1”的设备</p></li>
+
+<li><p>卸载卡 终端窗口输入“sudo diskutil unmount /dev/disk1s1”,然后输入您的系统密码</p></li>
+
+<li><p>设备名称变换 将您的设备名(例 如/dev/disk1s1)最后的 s1 去掉,然后在 disk 前面加上 r,变成” /dev/rdisk1”,
+这样您就得到 SD 卡的原始设备名称了。 也就是说,”/dev/disk1s1” = “/dev/rdisk1”</p></li>
+
+<li><p>用DD命令写入 sudo dd bs=1m if=2013-02-09-wheezy-raspbian.img of=/dev/rdisk1
+或者用RPi-sd card builder 这个APP写入 <a href="http://alltheware.wordpress.com/2012/12/11/easiest-way-sd-card-setup/">下载连接</a></p></li>
+</ul>
+
+<p>其他平台SD卡制作方法详见：<a href="http://pan.baidu.com/share/link?shareid=173464&amp;uk=1529595879">Raspberry Pi中文手册</a></p>
+
+<h1>连接设备</h1>
+
+<p>按照以下图片接口位置连接设备（USB键盘，鼠标，SD卡，网线，电视机或者显示器）
+<img src="http://files.leiphone.com/uploads/2012/08/raspberry-pi-3-1024x680.jpg" width="600" height="600"/></p>
+
+<p>HDMI支持开启，这个坑害我折腾半天，因为 Raspbian对于HDMI默认没有启用。如果你使用的是HDMI连接显示设备就要多一个步骤。</p>
+
+<ul>
+<li><p>开启HDMI，修改SD开中的config.txt文件里的参数，hdmi_safe的设置改成1</p>
+
+<p>hdmi_safe=1</p></li>
+</ul>
+
+<p>设别连接好就可以开机了，如果没什么问题开机后显示器上会显示Raspberry Pi的设置页面
+<img src="http://files.leiphone.com/uploads/2012/08/firstscreen.png" width="600" height="600"/></p>
+
+<ul>
+<li><p>info 顾名思义，显示PI的一些配置信息</p></li>
+
+<li><p>expand_rootfs 将SD卡系统的根目录扩展到整个SD卡，因为镜像只有2G左右，如果使用2G以上的SD卡，如果不使用
+该工具就会显示整个SD卡的容量只有2G</p></li>
+
+<li><p>overscan 图像显示扩充，如果你的显示器图像无法扩展到整个屏幕，整个选项需要开启图像就会拉伸到显示器满屏</p></li>
+
+<li><p>configure_keyboard 键盘配置，树莓派默认使用英国键盘，我们的键盘一般是美国布局的。所以要在Other，然后在里面选择English（US）
+到了：Use Control+Alt+Backspace to terminate the X server? 时，选择Yes，表示用这个可以终止X Server，当整个X-Window死掉的时候可以用。</p></li>
+
+<li><p>change_pass 更改用户密码，默认用户为pi无法修改，密码为raspberry 所以这里为了安全还是修改成自己的密码</p></li>
+
+<li><p>change_timezone 设置时区，因为LINUX莫有北京时区所以就选择Asia – Shanghai吧</p></li>
+
+<li><p>change_locale 设置编码，建议安装zh_CN.UTF-8,还有en_us.GBK-UTF-8这两个，默认设置en_us.GBK-UTF-8</p></li>
+
+<li><p>memory_split 内存分配，这里可以将内存划分给显存，如果跑图形或者高清播放这里要设置128M，如果纯文字的SERVER这里设置成最小即可。</p></li>
+
+<li><p>ssh 时候激活ssh，一般当图形页面出现问题时候，可以通过SSH登录过去进行修复，整个还是开这吧。</p></li>
+
+<li><p>boot_behaviour 启动的时候时候默认进入图形界面，不使用图形建议关闭，这很损耗性能。</p></li>
+</ul>
+
+<p>设置完成后，选择Finish，会提示是否重启，选择Yes。重启后即可进入图形页面。</p>
+
+<p><img src="http://ww1.sinaimg.cn/bmiddle/45895cd5jw1e386e16uw5j.jpg" alt="" />
+</p>
+
+<h1>设置临时IP(如果您的网络是自动获取 IP 地址的话,此时已经能够上网了,如果不行在进行这步骤设置)</h1>
+
+<p>需要先设置个临时性的网络配置，主要为了之后安装VIM编辑器，修改系统文件就是持久配置了</p>
+
+<p>ifconfig eth0 xxx.xxx.xxx.xxx netmask 255.255.255.0</p>
+
+<p>route add default gw yyy.yyy.yyy.yyy</p>
+
+<p>ifconfig eth0 up</p>
+
+<p>注意： xxx.xxx.xxx.xxx yyy.yyy.yyy.yyy为你所在环境的IP以及网关</p>
+
+<p>如果配置没问题，可以ping www.taobao.com就可以PING通</p>
+
+<p>跟新APT的源列表</p>
+
+<p>apt-get update</p>
+
+<p>安装VIM</p>
+
+<p>apt-get install vim</p>
+
+<h1>配置持久IP</h1>
+
+<p>vim /etc/network/interfaces</p>
+
+<p>去掉 inface eth0 inet dhcp 动态DHCP的配置修改成以下</p>
+
+<p>inface eth0 inet static</p>
+
+<p>address xxx.xxx.xxx.xxx</p>
+
+<p>gateway yyy.yyy.yyy.yyy</p>
+
+<p>netmask 255.255.255.0</p>
+
+<p>注意： xxx.xxx.xxx.xxx yyy.yyy.yyy.yyy为你所在环境的IP以及网关</p>
+
+<p>保存退出</p>
+
+<p>重启网络</p>
+
+<p>sudo service networking restart</p>
+
+<h1>更换了一个更加快速的源：</h1>
+
+<p>pi的源列表: <a href="http://www.raspbian.org/RaspbianMirrors">http://www.raspbian.org/RaspbianMirrors</a>
+测试了之后发现这个源在国内更新最快
+<a href="http://mirror.devunt.kr/raspbian/raspbian/">http://mirror.devunt.kr/raspbian/raspbian/</a></p>
+
+<p>更换源:</p>
+
+<p>sudo vi /etc/apt/sources.list</p>
+
+<p>更换为以下代码：</p>
+
+<p>deb <a href="http://mirror.devunt.kr/raspbian/raspbian/">http://mirror.devunt.kr/raspbian/raspbian/</a> wheezy main contrib non-free rpi</p>
+
+<p>图形界面下安装中文支持还有输入发</p>
+
+<p>-安装文泉字体
+sudo apt-get install ttf-wqy-zenhei</p>
+
+<p>-安装拼音输入发
+sudo apt-get install scim-pinyin</p>
+
+<p>-修改默认系统编码为zh_CN.UTF-8
+sudo raspi-config</p>
+
+<p>然后选择change_locale，在Default locale for the system environment:中选择zh_CN.UTF-8</p>
+
+<p>然后重启机器，就发现整个环境变成中文的了。</p>
+
+<h1>开启FTP</h1>
+
+<p>安装vsftpd服务器 (约400KB)</p>
+
+<p>sudo apt-get install vsftpd</p>
+
+<p>启动ftp服务</p>
+
+<p>sudo service vsftpd start</p>
+
+<p>编辑vsftdp的配置文件</p>
+
+<p>sudo vi /etc/vsftpd.conf</p>
+
+<p>找到以下行，修改成以下形式，如果有注释放开注释的#号即可</p>
+
+<p>anonymous_enable=NO</p>
+
+<p>表示：不允许匿名访问</p>
+
+<p>local_enable=YES</p>
+
+<p>设定本地用户可以访问。</p>
+
+<p>write_enable=YES</p>
+
+<p>设定可以进行写操作</p>
+
+<p>local_umask=022</p>
+
+<p>设定上传后文件的权限掩码。</p>
+
+<p>存盘退出</p>
+
+<p>重启vsftpd服务</p>
+
+<p>sudo service vsftpd restart</p>
+
+<h1>系统测试</h1>
+
+<p>如果对于你的Raspberry Pi的具体性能感兴趣的话，可以给你的Raspberry Pi做个系统测评。</p>
+
+<p>我们用的是UnixBench 这个工具</p>
+
+<pre><code>curl http://byte-unixbench.googlecode.com/files/unixbench-5.1.2.tar.gz -o unixbench-5.1.2.tar.gz
+tar zxvf unixbench-5.1.2.tar.gz
+cd unixbench-5.1.2
+make
+./Run
+</code></pre>
+
+<p>注意:如果没有图形的话，要在Makefile里注释掉X的测试</p>
+
+<p>#GRAPHIC_TESTS = defined</p>
+
+<p>测试结果</p>
+
+<pre><code>========================================================================
+   BYTE UNIX Benchmarks (Version 5.1.2)
+
+   System: raspberrypi: GNU/Linux
+   OS: GNU/Linux -- 3.6.11+ -- #371 PREEMPT Thu Feb 7 16:31:35 GMT 2013
+   Machine: armv6l (unknown)
+   Language: en_US.utf8 (charmap=&quot;ANSI_X3.4-1968&quot;, collate=&quot;ANSI_X3.4-1968&quot;)
+   15:31:42 up 51 min,  2 users,  load average: 0.32, 0.33, 0.41; runlevel 2
+
+------------------------------------------------------------------------
+Benchmark Run: Mon Apr 01 2013 15:31:42 - 15:59:52
+0 CPUs in system; running 1 parallel copy of tests
+
+Dhrystone 2 using register variables        1667613.1 lps   (10.0 s, 7 samples)
+Double-Precision Whetstone                      270.4 MWIPS (10.0 s, 7 samples)
+Execl Throughput                                256.0 lps   (29.9 s, 2 samples)
+File Copy 1024 bufsize 2000 maxblocks         45717.2
+ KBps  (30.1 s, 2 samples)
+File Copy 256 bufsize 500 maxblocks           14782.9 KBps  (30.0 s, 2 samples)
+File Copy 4096 bufsize 8000 maxblocks        104151.9 KBps  (30.0 s, 2 samples)
+Pipe Throughput                              185870.4 lps   (10.0 s, 7 samples)
+Pipe-based Context Switching                  24193.6 lps   (10.0 s, 7 samples)
+Process Creation                                831.9 lps   (30.0 s, 2 samples)
+Shell Scripts (1 concurrent)                    469.8 lpm   (60.1 s, 2 samples)
+Shell Scripts (8 concurrent)                     60.0 lpm   (61.0 s, 2 samples)
+System Call Overhead                         377382.3 lps   (10.0 s, 7 samples)
+
+System Benchmarks Index Values               BASELINE       RESULT    INDEX
+Dhrystone 2 using register variables         116700.0    1667613.1    142.9
+Double-Precision Whetstone                       55.0
+        270.4     49.2
+Execl Throughput                                 43.0        256.0     59.5
+File Copy 1024 bufsize 2000 maxblocks          3960.0      45717.2    115.4
+File Copy 256 bufsize 500 maxblocks            1655.0      14782.9     89.3
+File Copy 4096 bufsize 8000 maxblocks          5800.0     104151.9    179.6
+Pipe Throughput                               12440.0     185870.4    149.4
+Pipe-based Context Switching                   4000.0      24193.6     60.5
+Process Creation                                126.0        831.9     66.0
+Shell Scripts (1 concurrent)                     42.4        469.8    110.8
+Shell Scripts (8 concurrent)                      6.0         60.0    100.0
+System Call Overhead                          15000.0     377382.3    251.6
+                                                                   ========
+System Benchmarks Index Score                                         102.1
+</code></pre>
+
+<h1>到此为止，你的Raspberry Pi 已经具备了Linux系统以及独立的IP,可以SSH过去，FTP传文件，剩下的自己折腾吧。</h1>
+
+        <hr>
+        <div class="pagination">
+            <ul>
+                <ul>
+                    
+                    
+                    <li class="prev disabled"><a>&larr; Previous</a></li>
+                    
+
+                    <li><a href="/archive">Archive</a></li>
+
+                    
+                    <li class="next"><a href="/2013/pi-frist.html" title="初试Raspberry Pi">Next &rarr;</a></li>
+                    
+                    
+                </ul>
+            </ul>
+        </div>
+        <hr/>
+        
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'dqylyln'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </div>
+
+    <div style="padding-left:660px">
+        <script type="text/javascript" charset="utf-8">
+            (function () {
+                var _w = 86 , _h = 50;
+                var param = {
+                    url: location.href,
+                    type: '6',
+                    count: '1', /**是否显示分享数，1显示(可选)*/
+                    appkey: '', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title: '', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic: '', /**分享图片的路径(可选)*/
+                    ralateUid: '1166630101', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language: 'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd: new Date().valueOf()
+                }
+                var temp = [];
+                for (var p in param) {
+                    temp.push(p + '=' + encodeURIComponent(param[p] || ''))
+                }
+                document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="' + _w + '" height="' + _h + '"></iframe>')
+            })()
+        </script>
+        <h4>Published</h4>
+
+        <div class="date"><span>2013-04-06</span></div>
+        <br>
+        <h4>Categories</h4>
+        <ul class="tag_box">
+            
+            <li>
+  <a href="/categories/#RaspberryPi-ref">RaspberryPi <span>2</span></a>
+</li>
+            
+            <li>
+  <a href="/categories/#Blog-ref">Blog <span>3</span></a>
+</li>
+            
+        </ul>
+        <br>
+        <h4>Tags</h4>
+        <ul class="tag_box">
+            
+            <li>
+  <a href="/tags/#Raspberry-Pi-ref">Raspberry Pi <span>2</span></a>
+</li>
+            
+        </ul>
+        
+        <div style="float:right">
+    <h3>
+    </h3>
+    <br/>
+</div>
+        
+    </div>
+</div>
+        <hr/>
+        <script type="text/javascript">
+            alimama_pid = "mm_10003632_3503109_11465558";
+            alimama_width = 950;
+            alimama_height = 90;
+        </script>
+        <script src="http://a.alimama.cn/inf.js" type="text/javascript">
+        </script>
+    </div>
+    <footer>
+        <p>&copy; <a href="http://weibo.com/dqylyln">dqylyln</a> 2013
+            Powered by <a href="http://www.raspberrypi.org" target="_blank"><img
+                    src="http://a0.twimg.com/profile_images/1590336143/Raspi-PGB001_normal.png"/> Raspberry Pi</a>
+            with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+            and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+            and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+            <!--# echo var="remote_addr" default="no" -->
+            <br/>
+            <script src="http://s15.cnzz.com/stat.php?id=5178536&web_id=5178536&online=1&show=line"
+                    language="JavaScript"></script>
+        </p>
+    </footer>
+</div>
+<!-- /container -->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint linenums";
+  }
+  prettyPrint();
+</script>
+
+
+<script>
+    var _gaq=[['_setAccount','UA-37261636-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+<script type="text/javascript">
+    (function (win, doc) {
+        var s = doc.createElement("script"), h = doc.getElementsByTagName("head")[0];
+        if (!win.alimamatk_show) {
+            s.charset = "gbk";
+            s.async = true;
+            s.src = "http://a.alimama.cn/tkapi.js";
+            h.insertBefore(s, h.firstChild);
+        }
+        var o = {
+            pid: "mm_10003632_3503109_11465558",
+            appkey: "",
+            unid: ""
+        }
+        win.alimamatk_onload = win.alimamatk_onload || [];
+        win.alimamatk_onload.push(o);
+    })(window, document);
+</script>
+<img src="http://app.myalert.info/b.gif"/>
+</body>
+</html>
