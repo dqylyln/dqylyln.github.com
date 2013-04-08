@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>你的第一篇博客 - dqylyln的树梅派空间</title>
+    <title>Raspberry Pi 配置VNC - dqylyln的树梅派空间</title>
     
     <meta name="author" content="dqylyln">
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -79,85 +79,102 @@
 <div class="container">
     <div class="content">
         <div class="page-header">
-    <h1>你的第一篇博客 
+    <h1>Raspberry Pi 配置VNC 
     </h1>
 </div>
 
 <div class="row">
     <div class="span8">
-        <h1>感谢你使用Gor编写博客</h1>
+        <p>今天一个同事问我是否能远程访问RaspberryPi的桌面环境，当时一口回答VNC，至于咋搞一直没尝试过，因为我一直认为Raspberry Pi上搞X的话，性能真
+是惨不忍睹。但是本着探索的精神今天还是尝试了下顺便记录了下过程。</p>
 
-<h2>本文位于 posts/first-blog.md , 你可以任何删掉,修改这个文件</h2>
+<h1>安装 tightvncserver</h1>
 
-<p>文件开头是当前文章的元数据</p>
-
-<ol>
-<li>date为自动生成, 当然,你可以修改,这是你的自由</li>
-<li>permalink 可以是固定地址,也可以由gor为你自动生成</li>
-<li>categories 就是分类, 可以多个</li>
-<li>tags 同理,多个标签也是很常见的</li>
-</ol>
-
-<p>请确保文件使用UTF8 without BOM编码</p>
-
-<h2>你可以通过执行下面的语句来新建一篇博客:</h2>
-
-<pre><code>gor post 文章标题
+<pre><code>sudo apt-get isntall tightvncserver
 </code></pre>
 
-<h2>编译你的博客,并预览之</h2>
+<h1>启动VNC Server</h1>
 
-<pre><code>gor compile #编译
-gor http
+<pre><code>vncserver
 </code></pre>
 
-<p>然后打开你的浏览器,访问 <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a> 来预览</p>
+<p>设定访问密码,会出现两次，之后会询问一个只读密码，n跳过</p>
 
-<h2>你将使用Markdown来编写博客</h2>
+<h1>客户端连接</h1>
 
-<p><a href="http://wowubuntu.com/markdown/">Markdown 语法中文版</a> 能让你快速入门其语法</p>
+<p><img src="http://www.tightvnc.com/logo/tightvnc-logo-90x90.png" alt="" />
+</p>
 
-<p>相信<a href="http://markdownpad.com">MarkdownPad</a>或<a href="http://code.google.com/p/liteide/">liteide</a>会是你的编写博客的好帮手</p>
+<p>tightvnc的客户端有很多平台的，可以根据需要下载 <a href="http://www.tightvnc.com/download.php">下载连接</a></p>
 
-<h2>如果你打算部署到github的pages上</h2>
+<p>安装好客户端后，输入要连接RaspberryPi的地址以及端口(默认端口是5901) 就可以连接了</p>
 
-<ol>
-<li>申请github帐户</li>
-<li>新建一个库 username.github.com 即你的用户名命名的地址</li>
-<li>将compiled目录,作为根路径,提交上去github.com上</li>
-<li>稍等几分钟, 你即可通过 <a href="http://username.github.com">http://username.github.com</a> 访问到</li>
-</ol>
+<p>当然你也可以让RaspberryPi上的VNC的SERVER默认启动，那么可以参考以下方法。</p>
 
-<h2>附上git教程 <a href="http://gitbook.liuhui998.com/">GitBook中文版</a></h2>
+<h1>设定开机启动(如果你愿意)</h1>
 
-<p>一般来说,你只需要几个简单的git命令就足以应付大部分需求(仅示例)</p>
+<h2>准备开机启动脚本</h2>
 
-<pre><code>git clone git://github.com/wendal/wendal.net.git
-git add -A
-git commit -m &quot;...&quot;
-git pull
-git push
+<pre><code>sudo /etc/init.d/tightvncserver
 </code></pre>
 
-<h2>用gor编写博客将会是一件很开心的事,如果有任何意见或建议,欢迎到 <a href="http://github.com/wendal/gor">gor的官网</a> 提交issue</h2>
+<p>*下面是脚本内容</p>
 
-<h1>祝你使用愉快</h1>
+<pre><code>#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:             tightvnc
+# Required-Start:       $remote_fs $syslog
+# Required-Stop:        $remote_fs $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Start VNC Server as a service
+### END INIT INFO
+
+VNCUSER='pi'
+eval cd ~${VNCUSER}
+
+case &quot;$1&quot; in
+    start)
+        su ${VNCUSER} -c '/usr/bin/tightvncserver :1'
+        echo &quot;Starting TightVNC server for ${VNCUSER}&quot;
+        ;;
+    stop)
+        pkill Xtightvnc
+        echo &quot;Tightvncserver stopped&quot;
+        ;;
+    *)
+        echo &quot;Usage: /etc/init.d/tightvncserver {start|stop}&quot;
+        exit 1
+        ;;
+esac
+
+exit 0
+</code></pre>
+
+<h2>修改启动脚本权限</h2>
+
+<p>sudo chmod 755 /etc/init.d/tightvncserver</p>
+
+<h2>添加到开机启动</h2>
+
+<p>sudo update-rc.d tightvncserver defaults</p>
 
         <hr>
         <div class="pagination">
             <ul>
                 <ul>
                     
-                    <li class="prev"><a href="/2013/pi-setup.html" title="Raspberry Pi 开机与设置">&larr; Previous</a></li>
                     
+                    <li class="prev disabled"><a>&larr; Previous</a></li>
                     
 
                     <li><a href="/archive">Archive</a></li>
 
                     
+                    <li class="next"><a href="/2013/pi-frist.html" title="初试Raspberry Pi">Next &rarr;</a></li>
                     
-                    <li class="next disabled"><a>Next &rarr;</a>
-                        
+                    
                 </ul>
             </ul>
         </div>
@@ -203,13 +220,13 @@ git push
         </script>
         <h4>Published</h4>
 
-        <div class="date"><span>2013-04-02</span></div>
+        <div class="date"><span>2013-04-08</span></div>
         <br>
         <h4>Categories</h4>
         <ul class="tag_box">
             
             <li>
-  <a href="/categories/#Gor-ref">Gor <span>1</span></a>
+  <a href="/categories/#RaspberryPi-ref">RaspberryPi <span>3</span></a>
 </li>
             
             <li>
@@ -222,7 +239,7 @@ git push
         <ul class="tag_box">
             
             <li>
-  <a href="/tags/#Gor-ref">Gor <span>1</span></a>
+  <a href="/tags/#Raspberry-Pi-ref">Raspberry Pi <span>3</span></a>
 </li>
             
         </ul>
