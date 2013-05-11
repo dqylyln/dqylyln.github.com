@@ -21,7 +21,7 @@
 <div class="navbar">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="/" style="padding-left:46px;">dqylyln</a>
+            <a class="brand" href="/" style="padding-left:46px;">dqylyln树梅派的空间</a>
             <ul class="nav">
                 
                 
@@ -94,6 +94,53 @@
                 
                 
             </ul>
+        </div>
+        
+        <div class="post">
+            <h1 class="title"><a href="/2013/use-cosm.html">利用COSM监控Raspberry Pi的Load和温度</a> <span class="date">2013-04-22</span></h1>
+            <h1>前言</h1>
+
+<p>在RaspberryPi搭建博客后发现个问题，就是我如何能够知道RaspberryPi的一些运行信息，比如CPULoad或者温度。初步想法是利用图表形式汇总信息，然后
+通过网页图表展示。该方案主要有以下几个关键点：</p>
+
+<p>1.打点，将收集的信息进行打点，通常是将数据写入文件。</p>
+
+<p>2.收集打点数据文件，然后分析出数据内容。</p>
+
+<p>3.根据分析结果，进行画图用于展示。</p>
+
+<p>而针对以上几点来看让Raspberry Pi去打点没什么问题，收集打点数据分析内容，利用分析结果画图展示这个两条如果让RaspberryPi来做的话有些浪费本地资源，
+本身Raspberry Pi的资源就有限如CPU。所以如果可以将打点数据上传到第三方的服务中，让第三方分析并且画图展示岂不是更好。所以，参考了一粟同学的方案。
+利用<a href="https://cosm.com">cosm.com</a> 提供的服务来进行数据收集和描点画图。</p>
+
+<h1>cosm账户准备</h1>
+
+            <div class="more">
+                <a href="/2013/use-cosm.html" class="btn btn-small">阅读全文</a>
+            </div>
+        </div>
+        
+        <div class="post">
+            <h1 class="title"><a href="/2013/pi-gor.html">利用GOR在Raspberry Pi上搭建博客</a> <span class="date">2013-04-11</span></h1>
+            <h1>前言</h1>
+
+<p>Pi入手后就想在上面搭建一个博客，之前首先想到的是一些现成的解决方案如Wordpress，rubyonrails等等，但是随着入手后的一些折腾,发现Pi的CPU
+的性能真的不咋地，如果让本来就弱的CPU再负责渲染动态页面的话，结果可想而知。</p>
+
+<p>所以思路就需要转变一下，如果是HTML的静态页面的话，一些耗费资源的功能，如图床，评论等，都以云服务的方式放到公网上，那么以Pi的硬件配置应该问题不大。</p>
+
+<h2>为什么选择GOR</h2>
+
+<p>经过上面的分析，Pi上搭建博客首选是静态页面方案，但是纯HTML搭建起来的话将是个费时费力的活。有没有更好的方案呢，参考了<a href="http://hugozhu.myalert.info">一粟</a>的GO+GOR
+方案，我觉得这个是我想要的东东。</p>
+
+<h1>安装GOR</h1>
+
+<p>gor 是使用golang实现的类Ruhoh静态博客引擎(Ruhoh like),基本兼容ruhoh 1.x规范. 相当于与ruhoh的官方实现(ruby实现)</p>
+
+            <div class="more">
+                <a href="/2013/pi-gor.html" class="btn btn-small">阅读全文</a>
+            </div>
         </div>
         
         <div class="post">

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>你的第一篇博客 - dqylyln的树梅派空间</title>
+    <title>利用GOR在Raspberry Pi上搭建博客 - dqylyln的树梅派空间</title>
     
     <meta name="author" content="dqylyln">
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -79,85 +79,184 @@
 <div class="container">
     <div class="content">
         <div class="page-header">
-    <h1>你的第一篇博客 
+    <h1>利用GOR在Raspberry Pi上搭建博客 
     </h1>
 </div>
 
 <div class="row">
     <div class="span8">
-        <h1>感谢你使用Gor编写博客</h1>
+        <h1>前言</h1>
 
-<h2>本文位于 posts/first-blog.md , 你可以任何删掉,修改这个文件</h2>
+<p>Pi入手后就想在上面搭建一个博客，之前首先想到的是一些现成的解决方案如Wordpress，rubyonrails等等，但是随着入手后的一些折腾,发现Pi的CPU
+的性能真的不咋地，如果让本来就弱的CPU再负责渲染动态页面的话，结果可想而知。</p>
 
-<p>文件开头是当前文章的元数据</p>
+<p>所以思路就需要转变一下，如果是HTML的静态页面的话，一些耗费资源的功能，如图床，评论等，都以云服务的方式放到公网上，那么以Pi的硬件配置应该问题不大。</p>
 
-<ol>
-<li>date为自动生成, 当然,你可以修改,这是你的自由</li>
-<li>permalink 可以是固定地址,也可以由gor为你自动生成</li>
-<li>categories 就是分类, 可以多个</li>
-<li>tags 同理,多个标签也是很常见的</li>
-</ol>
+<h2>为什么选择GOR</h2>
 
-<p>请确保文件使用UTF8 without BOM编码</p>
+<p>经过上面的分析，Pi上搭建博客首选是静态页面方案，但是纯HTML搭建起来的话将是个费时费力的活。有没有更好的方案呢，参考了<a href="http://hugozhu.myalert.info">一粟</a>的GO+GOR
+方案，我觉得这个是我想要的东东。</p>
 
-<h2>你可以通过执行下面的语句来新建一篇博客:</h2>
+<h1>安装GOR</h1>
 
-<pre><code>gor post 文章标题
+<p>gor 是使用golang实现的类Ruhoh静态博客引擎(Ruhoh like),基本兼容ruhoh 1.x规范. 相当于与ruhoh的官方实现(ruby实现)</p>
+
+<p>有以下优点:</p>
+
+<p>速度完胜 – 编译wendal.net近200篇博客,仅需要1秒</p>
+
+<p>安装简单 – 得益于golang的特性,编译后仅一个可运行程序,无依赖</p>
+
+<h1>安装Golang(<a href="http://golang.org">Golang官网</a>)</h1>
+
+<p>1.安装Mercurial(GOOGLE惯用mercurial做版本管理)</p>
+
+<pre><code>sudo apt-get install mercurial
 </code></pre>
 
-<h2>编译你的博客,并预览之</h2>
+<p>2.检出GO的代码，注意Pi是ARM平台不能用主干的代码，需要用TIP分支</p>
 
-<pre><code>gor compile #编译
-gor http
+<pre><code>hg clone -u tip https://code.google.com/p/go
 </code></pre>
 
-<p>然后打开你的浏览器,访问 <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a> 来预览</p>
+<p>一顿漫长等待，可以看到PI的CPU很高，如果实在不行可以在PC机器上HG出来源码，FTP发到Pi上。</p>
 
-<h2>你将使用Markdown来编写博客</h2>
+<p>3.编译源码并且安装</p>
 
-<p><a href="http://wowubuntu.com/markdown/">Markdown 语法中文版</a> 能让你快速入门其语法</p>
-
-<p>相信<a href="http://markdownpad.com">MarkdownPad</a>或<a href="http://code.google.com/p/liteide/">liteide</a>会是你的编写博客的好帮手</p>
-
-<h2>如果你打算部署到github的pages上</h2>
-
-<ol>
-<li>申请github帐户</li>
-<li>新建一个库 username.github.com 即你的用户名命名的地址</li>
-<li>将compiled目录,作为根路径,提交上去github.com上</li>
-<li>稍等几分钟, 你即可通过 <a href="http://username.github.com">http://username.github.com</a> 访问到</li>
-</ol>
-
-<h2>附上git教程 <a href="http://gitbook.liuhui998.com/">GitBook中文版</a></h2>
-
-<p>一般来说,你只需要几个简单的git命令就足以应付大部分需求(仅示例)</p>
-
-<pre><code>git clone git://github.com/wendal/wendal.net.git
-git add -A
-git commit -m &quot;...&quot;
-git pull
-git push
+<pre><code>cd go/src (进入源码目录)
+./all.bash (运行编译安装脚本)
 </code></pre>
 
-<h2>用gor编写博客将会是一件很开心的事,如果有任何意见或建议,欢迎到 <a href="http://github.com/wendal/gor">gor的官网</a> 提交issue</h2>
+<p>整个编译安装过程会很漫长，要所有TEST都通过后GO才算安装成功。</p>
 
-<h1>祝你使用愉快</h1>
+<p>注意：如果安装报错，尝试用TIP分支的其他版本，之前就遇到了这个坑，最新的TIP是无法编译通过的（看来GOOGLE的程序员也会缺少自测就提交代码）。</p>
+
+<p>附HG回滚：</p>
+
+<pre><code>hg revert -r 15749:e92503ce815b --all (我是使用15749:e92503ce815b 这个版本没问题)
+</code></pre>
+
+<h1>安装GOR（<a href="https://github.com/wendal/gor">Gor官网</a>）</h1>
+
+<p>1.用go安装gor</p>
+
+<pre><code>go get -u github.com/wendal/gor
+go install github.com/wendal/gor/gor
+</code></pre>
+
+<p>2.设置GOPATH</p>
+
+<pre><code>GOPATH=/home/pi/mygo （仅供参考 mygo是我建立的一个目录专门放GO的工程）
+</code></pre>
+
+<h1>建立BLOG站点</h1>
+
+<pre><code>gor new blog (会在指定的命令目录下生成BLOG的站点目录)
+</code></pre>
+
+<h1>创建博客文章</h1>
+
+<pre><code>cd blog
+gor post &quot;goodday&quot; (即可生成 post/goodday.md文件, 打开你的markdown编辑器即可编写)
+</code></pre>
+
+<h1>编译博客</h1>
+
+<p>在blog站点目录下执行</p>
+
+<pre><code>gor compile
+</code></pre>
+
+<p>这样会在你的blog站点目录下生成compiled目录，里面的内容就是编译后的静态文件</p>
+
+<h1>本地预览</h1>
+
+<p>在blog站点目录下执行</p>
+
+<pre><code>gor http
+</code></pre>
+
+<p>浏览器输入http://xxxx:8080 （xxx为你PI的IP）,就可以看到结果</p>
+
+<h1>GOR站点的基本配置</h1>
+
+<p>*打开站点根目录下的site.yml文件</p>
+
+<pre><code>1.填入title, 作者等信息
+2.填入邮箱等信息
+</code></pre>
+
+<p>*打开站点根目录下的config.yml文件</p>
+
+<pre><code>1.设置production_url为你的网站地址, 例如 http://wendal.net 最后面不需要加入/ 生成rss.xml等文件时会用到
+2.summary_lines 首页的文章摘要的长度,按你喜欢的呗
+3.latest 首页显示多少文章
+</code></pre>
+
+<p>*打开widgets目录, 可以看到基本的挂件,里面有config.yml配置文件</p>
+
+<pre><code>1.analytics 暂时只支持google analytics, 填入tracking_id（可不填）
+2.google_prettify 代码高亮,一般不修改
+3.comments 暂时只支持disqus, 请填入short_name
+</code></pre>
+
+<p>注意：comments需要到 <a href="http://disqus.com">disqus</a> 注册个账号，然后申请个short_name，这样GOR就会为你的博客集成disqus的
+评论功能。</p>
+
+<h1>安装nginx</h1>
+
+<p>gor http 命令只能提供开发调试功能，对于server side include这样类似于显示客户端IP等功能就无能为力了，所以要用nginx</p>
+
+<p>安装：</p>
+
+<pre><code>sudo apt-get install nginx
+</code></pre>
+
+<p>添加虚拟主机</p>
+
+<pre><code>sudo vi /etc/nginx/sites-enabled/default
+</code></pre>
+
+<p>添加内容</p>
+
+<pre><code>server {
+    server_name hugozhu.myalert.info;
+    root /home/pi/blog/compiled; #站点编译静态文件所在目录
+    location / {
+        ssi on;
+    }
+}
+</code></pre>
+
+<p>这样只要在页面上增加以下代码，就可以显示客户端IP了</p>
+
+<pre><code>&lt;!--# echo var=&quot;remote_addr&quot; default=&quot;no&quot; --&gt;
+</code></pre>
+
+<h1>重启Nginx</h1>
+
+<pre><code>sudo /etc/init.d/nginx restart
+</code></pre>
+
+<h1>参考：</h1>
+
+<p><a href="http://hugozhu.myalert.info/2013/02/27/%E5%9C%A8Pi%E5%92%8CGithub%E4%B8%8A%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2.html">在Pi和Github上搭建自己的个人博客</a></p>
 
         <hr>
         <div class="pagination">
             <ul>
                 <ul>
                     
-                    <li class="prev"><a href="/2013/pi-setup.html" title="Raspberry Pi 开机与设置">&larr; Previous</a></li>
+                    <li class="prev"><a href="/2013/use-cosm.html" title="利用COSM监控Raspberry Pi的Load和温度">&larr; Previous</a></li>
                     
                     
 
                     <li><a href="/archive">Archive</a></li>
 
                     
+                    <li class="next"><a href="/2013/pi-vnc.html" title="Raspberry Pi 配置VNC">Next &rarr;</a></li>
                     
-                    <li class="next disabled"><a>Next &rarr;</a>
-                        
+                    
                 </ul>
             </ul>
         </div>
@@ -203,13 +302,13 @@ git push
         </script>
         <h4>Published</h4>
 
-        <div class="date"><span>2013-04-02</span></div>
+        <div class="date"><span>2013-04-11</span></div>
         <br>
         <h4>Categories</h4>
         <ul class="tag_box">
             
             <li>
-  <a href="/categories/#Gor-ref">Gor <span>1</span></a>
+  <a href="/categories/#RaspberryPi-ref">RaspberryPi <span>5</span></a>
 </li>
             
             <li>
@@ -222,7 +321,7 @@ git push
         <ul class="tag_box">
             
             <li>
-  <a href="/tags/#Gor-ref">Gor <span>1</span></a>
+  <a href="/tags/#Raspberry-Pi-ref">Raspberry Pi <span>5</span></a>
 </li>
             
         </ul>

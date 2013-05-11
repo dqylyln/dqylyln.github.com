@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>利用COSM监控Raspberry Pi的Load和温度 - dqylyln的树梅派空间</title>
+    
+    <meta name="author" content="dqylyln">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+
+    <link rel="shortcut icon" href="http://tp2.sinaimg.cn/1166630101/50/40003509422/1">
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/" style="padding-left:46px;">dqylyln树梅派的空间</a>
+            <ul class="nav">
+                
+                
+
+
+  <li><a href="/posts">Blogs</a></li>
+
+
+                
+                
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+                
+                
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+                
+                
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+                
+                
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+                
+                
+
+
+  <li><a href="/about">About Me</a></li>
+
+
+                
+                <li style="padding-left:10px">
+                    <form class="navbar-search pull-right" method="GET" action="https://www.google.com/search">
+                        <input type="text" name="as_q" class="search-query" placeholder=" Search... ">
+                        <input type="hidden" name="as_sitesearch" value="dqylyln.dyndns.org">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="content">
+        <div class="page-header">
+    <h1>利用COSM监控Raspberry Pi的Load和温度 
+    </h1>
+</div>
+
+<div class="row">
+    <div class="span8">
+        <h1>前言</h1>
+
+<p>在RaspberryPi搭建博客后发现个问题，就是我如何能够知道RaspberryPi的一些运行信息，比如CPULoad或者温度。初步想法是利用图表形式汇总信息，然后
+通过网页图表展示。该方案主要有以下几个关键点：</p>
+
+<p>1.打点，将收集的信息进行打点，通常是将数据写入文件。</p>
+
+<p>2.收集打点数据文件，然后分析出数据内容。</p>
+
+<p>3.根据分析结果，进行画图用于展示。</p>
+
+<p>而针对以上几点来看让Raspberry Pi去打点没什么问题，收集打点数据分析内容，利用分析结果画图展示这个两条如果让RaspberryPi来做的话有些浪费本地资源，
+本身Raspberry Pi的资源就有限如CPU。所以如果可以将打点数据上传到第三方的服务中，让第三方分析并且画图展示岂不是更好。所以，参考了一粟同学的方案。
+利用<a href="https://cosm.com">cosm.com</a> 提供的服务来进行数据收集和描点画图。</p>
+
+<h1>cosm账户准备</h1>
+
+<p>1.注册账户，因为需要邮箱收取激活邮件，所以需要填写正确的邮件地址。（激活邮件到达比较慢，至少我是等了半天才收到激活邮件）</p>
+
+<p>2.添加一个数据FEED</p>
+
+<ul>
+<li>点击右边的个人属性面板，选择Console 然后点击Device/Feed 按钮</li>
+</ul>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366623486241.png" width="600" height="600"/></p>
+
+<ul>
+<li>在弹出的层上选择Something Else，在弹出层后选择No, I will push data to Cosm（因为是主动PUSH数据）</li>
+</ul>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366623781107.png" width="600" height="600"/></p>
+
+<ul>
+<li>添加标题，这个随便命名成你喜欢的好了</li>
+</ul>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366624001671.png" width="600" height="600"/></p>
+
+<ul>
+<li>设置标签TAGS，命名也随便你</li>
+</ul>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366624162523.png" width="600" height="600"/></p>
+
+<ul>
+<li>点击create 完成FEED的创建，记住你的FEED ID后续要用</li>
+</ul>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366624227791.png" width="600" height="600"/></p>
+
+<p>*设置API的密钥，点击右边Keys然后添加一个Key名字随便，然后选择这个KEY可以使用的对应的FEED名称，选择刚才建立的FEED就行
+权限就选择ALL吧，好处是数据中LINE的ID增加减少自动生效不用到FEED里添加新LINE的ID。</p>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366627253382.png" width="600" height="600"/></p>
+
+<p>到此为止你的FEED已经创建好了，有空的话可以看下创建成功页面下的一些示范API的连接，支持JAVA，CURL等。这里主要用CURL</p>
+
+<h1>cosm http API</h1>
+
+<p>上面已经创建好了数据的FEED，剩下的就是向这个FEED里提交数据了，这里用的是CRUL的API<a href="https://cosm.com/docs/quickstart/curl.html">CURL API详情</a></p>
+
+<p>1.数据格式（JSON）</p>
+
+<pre><code>{
+    &quot;datastreams&quot;: [
+        {
+            &quot;id&quot;: &quot;load&quot;,
+            &quot;current_value&quot;: &quot;9.00&quot;
+        },
+        {
+            &quot;id&quot;: &quot;temp&quot;,
+            &quot;current_value&quot;: &quot;89.15&quot;
+        }
+    ]
+}
+</code></pre>
+
+<p>每条线的点的数据结构是KEY-VALUE形式，其中id代表是这个点属于线的ID(自己定义有意义的名称 如Load)，current_value是指这个点的VALUE。
+推荐一个在线的JOSN格式化和校验工具 <a href="http://www.jsoneditoronline.org/">jsoneditoronline</a></p>
+
+<p>2.提交数据</p>
+
+<p>cosm提供了HTTP的API方式</p>
+
+<pre><code>URL: http://api.cosm.com/v2/feeds/${feed_id}?timezone=+8
+
+HEAD：需要增加X-ApiKey：${apiKey}
+
+putData:上面的JSON数据
+</code></pre>
+
+<h1>浏览器调试</h1>
+
+<p>利用chrome的一个插件叫<a href="https://chrome.google.com/webstore/detail/dev-http-client/aejoelaoggembcahagimdiliamlcdmfm/details?utm_source=chrome-ntp-icon">Dev Http Client</a>, 在连接地址里填入API的地址其中feed_id换成你真实的FEED_ID</p>
+
+<p>如：api.cosm.com/v2/feeds/126908?timezone=+8</p>
+
+<p>启用HEADERS 添加一个X-ApiKey 的KEY VALUE就是你的APPKEY.</p>
+
+<p>BODY 处填写需要发送的JSON数据，方式选择PUT</p>
+
+<p>点击发送即可，RESPONSE 处会显示200表示y成功 。如下图：</p>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366633121092.png" width="600" height="600"/></p>
+
+<p>这个时候访问下 <a href="https://cosm.com/feeds/${feed_id">https://cosm.com/feeds/${feed_id</a>} 这个地址就可以看到刚才PUT过去的数据就OK了代表你的API已经调试OK.</p>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366704212967.png" width="600" height="600"/></p>
+
+<h1>准备SHELL打点脚本</h1>
+
+<p>1.cpuLoad 数据收集</p>
+
+<pre><code>cat /proc/loadavg | awk '{print $2}'`
+</code></pre>
+
+<p>2.CPU温度 数据收集</p>
+
+<pre><code>cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}'
+</code></pre>
+
+<p>通过以上2条命令就可以查看当前的CPU对应的LOADE和温度，下面就需要将收集到的数据组装成cosm的API需要的JSON格式在PUT给cosm就可以了。</p>
+
+<p>下面是脚本的例子：</p>
+
+<pre><code>#!/bin/bash
+
+LOCATION='/home/pi/sysdata'   #生成JSON文件路径,替换成你的路径
+API_KEY='l9eHDf_fLzQx9Qfc8hCVrIan9DOSAKxrN21EOTdyL1IxST0g' #API使用的KEY,替换成你的KEY
+FEED_ID='126908' #提交数据的FEED,替换成你的FEED_ID
+####################################################
+
+COSM_URL=http://api.cosm.com/v2/feeds/${FEED_ID}?timezone=+8
+cpu_load=`cat /proc/loadavg | awk '{print $2}'`
+
+for i in 1 2 3 4 5; do
+        cpu_t=`cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}'`
+        if [[ &quot;${cpu_t}&quot; =~ ^- ]]
+        then
+                cpu_t='0.0'
+        else
+                echo ${cpu_t}
+                break
+        fi
+done
+
+STR=`awk 'BEGIN{printf &quot;{\&quot;datastreams\&quot;:[ {\&quot;id\&quot;:\&quot;load\&quot;,\&quot;current_value\&quot;:\&quot;%.2f\&quot;}, {\&quot;id\&quot;:\&quot;temp\&quot;,\&quot;current_value\&quot;:\&quot;%.2f\&quot;}] } &quot;,'$cpu_load','$cpu_t'}'`
+
+echo ${cpu_t}
+echo ${cpu_load}
+echo ${STR}
+echo ${STR} &gt; ${LOCATION}/cosm.json
+curl -s -v --request PUT --header &quot;X-ApiKey: ${API_KEY}&quot; --data-binary @${LOCATION}/cosm.json ${COSM_URL}
+</code></pre>
+
+<p>修改脚本中需要替换成你自己的三个变量LOCATION，API_KEY，FEED_ID 之后 赋予改脚本文件 755权限并且运行。</p>
+
+<p>例如：该脚本名称testSys.sh</p>
+
+<pre><code>chmod 755 testSys.sh
+./testSys.sh
+</code></pre>
+
+<p>可以看到以下结果:</p>
+
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366706378183.png" width="600" height="600"/></p>
+
+<h1>将打点脚本添加到CRONTAB中</h1>
+
+<pre><code>crontab -e
+
+1 * * * * /home/pi/sysdata/testSys.sh&gt;/dev/null 2&gt;&amp;1 &amp; #每一分钟运行一次/home/pi/sysdata/testSys.sh
+</code></pre>
+
+<h1>页面引入图表</h1>
+
+<p>在需要暂时图表的地方加入以下代码：</p>
+
+<pre><code>&lt;img src=&quot;https://api.cosm.com/v2/feeds/${FEED_ID}/datastreams/${LINE_ID}.png?width=340&amp;height=180&amp;colour=%23f15a24&amp;duration=2days&amp;title=${TITLE}&amp;show_axis_labels=false&amp;detailed_grid=true&amp;scale=&amp;timezone=8&quot;/&gt;
+</code></pre>
+
+<p>${FEED_ID}:替换成你创建FEED的ID，上个例子中就是126908</p>
+
+<p>${LINE_ID}:替换成你FEED里具体LINE的ID，上个例子中就是load或者temp</p>
+
+<p>${TITLE}  :图表展示上的标题,可以自己按照需要命名，比如CPU的LOAD</p>
+
+<p>经过以上步骤就可以将你的PI上的CPU的LOAD还有温度数据采集到放到cosm展示，其他原理类似如统计在线人数等需求都可以用这个cosm的服务来实现。</p>
+
+        <hr>
+        <div class="pagination">
+            <ul>
+                <ul>
+                    
+                    
+                    <li class="prev disabled"><a>&larr; Previous</a></li>
+                    
+
+                    <li><a href="/archive">Archive</a></li>
+
+                    
+                    <li class="next"><a href="/2013/pi-gor.html" title="利用GOR在Raspberry Pi上搭建博客">Next &rarr;</a></li>
+                    
+                    
+                </ul>
+            </ul>
+        </div>
+        <hr/>
+        
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'dqylyln'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </div>
+
+    <div style="padding-left:660px">
+        <script type="text/javascript" charset="utf-8">
+            (function () {
+                var _w = 86 , _h = 50;
+                var param = {
+                    url: location.href,
+                    type: '6',
+                    count: '1', /**是否显示分享数，1显示(可选)*/
+                    appkey: '', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title: '', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic: '', /**分享图片的路径(可选)*/
+                    ralateUid: '1166630101', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language: 'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd: new Date().valueOf()
+                }
+                var temp = [];
+                for (var p in param) {
+                    temp.push(p + '=' + encodeURIComponent(param[p] || ''))
+                }
+                document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="' + _w + '" height="' + _h + '"></iframe>')
+            })()
+        </script>
+        <h4>Published</h4>
+
+        <div class="date"><span>2013-04-22</span></div>
+        <br>
+        <h4>Categories</h4>
+        <ul class="tag_box">
+            
+            <li>
+  <a href="/categories/#RaspberryPi-ref">RaspberryPi <span>5</span></a>
+</li>
+            
+            <li>
+  <a href="/categories/#Blog-ref">Blog <span>6</span></a>
+</li>
+            
+        </ul>
+        <br>
+        <h4>Tags</h4>
+        <ul class="tag_box">
+            
+            <li>
+  <a href="/tags/#Raspberry-Pi-ref">Raspberry Pi <span>5</span></a>
+</li>
+            
+        </ul>
+        
+        <div style="float:right">
+    <h3>
+    </h3>
+    <br/>
+</div>
+        
+    </div>
+</div>
+        <hr/>
+        <script type="text/javascript">
+            alimama_pid = "mm_10003632_3503109_11465558";
+            alimama_width = 950;
+            alimama_height = 90;
+        </script>
+        <script src="http://a.alimama.cn/inf.js" type="text/javascript">
+        </script>
+    </div>
+    <footer>
+        <p>&copy; <a href="http://weibo.com/dqylyln">dqylyln</a> 2013
+            Powered by <a href="http://www.raspberrypi.org" target="_blank"><img
+                    src="http://a0.twimg.com/profile_images/1590336143/Raspi-PGB001_normal.png"/> Raspberry Pi</a>
+            with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+            and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+            and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+            <!--# echo var="remote_addr" default="no" -->
+            <br/>
+            <script src="http://s15.cnzz.com/stat.php?id=5178536&web_id=5178536&online=1&show=line"
+                    language="JavaScript"></script>
+        </p>
+    </footer>
+</div>
+<!-- /container -->
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint linenums";
+  }
+  prettyPrint();
+</script>
+
+
+<script>
+    var _gaq=[['_setAccount','UA-37261636-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+<script type="text/javascript">
+    (function (win, doc) {
+        var s = doc.createElement("script"), h = doc.getElementsByTagName("head")[0];
+        if (!win.alimamatk_show) {
+            s.charset = "gbk";
+            s.async = true;
+            s.src = "http://a.alimama.cn/tkapi.js";
+            h.insertBefore(s, h.firstChild);
+        }
+        var o = {
+            pid: "mm_10003632_3503109_11465558",
+            appkey: "",
+            unid: ""
+        }
+        win.alimamatk_onload = win.alimamatk_onload || [];
+        win.alimamatk_onload.push(o);
+    })(window, document);
+</script>
+<img src="http://app.myalert.info/b.gif"/>
+</body>
+</html>
