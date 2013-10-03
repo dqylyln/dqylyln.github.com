@@ -21,7 +21,7 @@
 <div class="navbar">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="/" style="padding-left:46px;">dqylyln树梅派的空间</a>
+            <a class="brand" href="/" style="padding-left:46px;">DQY的树莓派空间</a>
             <ul class="nav">
                 
                 
@@ -84,7 +84,7 @@
 </div>
 
 <div class="row">
-    <div class="span8">
+    <div class="span10">
         <h1>前言</h1>
 
 <p>在RaspberryPi搭建博客后发现个问题，就是我如何能够知道RaspberryPi的一些运行信息，比如CPULoad或者温度。初步想法是利用图表形式汇总信息，然后
@@ -110,17 +110,17 @@
 <li>菜单上develop， 然后点击Add Device</li>
 </ul>
 
-<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368624872171.png" width="600" height="600"/></p>
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368624872171.png" width="770" height="770"/></p>
 
 <ul>
 <li>提交后会得到Feed ID，Feed URL，API Endpoint相关信息，后续API使用要用。</li>
 </ul>
 
-<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368625058391.png" width="600" height="600"/></p>
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368625058391.png" width="770" height="770"/></p>
 
 <p>*设置API的密钥 在API Keys选择添加一个API,设置属性Read，Create，Update，Delete，标签随便命名。</p>
 
-<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368625265417.png" width="600" height="600"/></p>
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368625265417.png" width="770" height="770"/></p>
 
 <p>到此为止你的FEED相关需要的东西经创建好了，有空的话可以看下创建成功页面下的一些示范API的连接，支持JAVA，CURL等。这里主要用CURL</p>
 
@@ -170,11 +170,11 @@ putData:上面的JSON数据
 
 <p>点击发送即可，RESPONSE 处会显示200表示y成功 。如下图：</p>
 
-<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366633121092.png" width="600" height="600"/></p>
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366633121092.png" width="770" height="770"/></p>
 
 <p>这个时候访问下 <a href="https://xively.com/feeds/80400859">https://xively.com/feeds/80400859</a> 这个地址就可以看到刚才PUT过去的数据就OK了代表你的API已经调试OK.</p>
 
-<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368625828856.png" width="600" height="600"/></p>
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1368625828856.png" width="770" height="770"/></p>
 
 <h1>准备SHELL打点脚本</h1>
 
@@ -232,7 +232,7 @@ curl -s -v --request PUT --header &quot;X-ApiKey: ${API_KEY}&quot; --data-binary
 
 <p>可以看到以下结果:</p>
 
-<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366706378183.png" width="600" height="600"/></p>
+<p><img src="http://cdntest.aliyun.com/faxianla/wood/mt1366706378183.png" width="770" height="770"/></p>
 
 <h1>将打点脚本添加到CRONTAB中</h1>
 
@@ -261,8 +261,8 @@ curl -s -v --request PUT --header &quot;X-ApiKey: ${API_KEY}&quot; --data-binary
             <ul>
                 <ul>
                     
+                    <li class="prev"><a href="/2013/sacc-2013.html" title="SACC2013-手记">&larr; Previous</a></li>
                     
-                    <li class="prev disabled"><a>&larr; Previous</a></li>
                     
 
                     <li><a href="/archive">Archive</a></li>
@@ -292,7 +292,7 @@ curl -s -v --request PUT --header &quot;X-ApiKey: ${API_KEY}&quot; --data-binary
 
     </div>
 
-    <div style="padding-left:660px">
+    <div style="padding-left:830px">
         <script type="text/javascript" charset="utf-8">
             (function () {
                 var _w = 86 , _h = 50;
@@ -315,7 +315,6 @@ curl -s -v --request PUT --header &quot;X-ApiKey: ${API_KEY}&quot; --data-binary
             })()
         </script>
         <h4>Published</h4>
-
         <div class="date"><span>2013-04-22</span></div>
         <br>
         <h4>Categories</h4>
@@ -326,7 +325,7 @@ curl -s -v --request PUT --header &quot;X-ApiKey: ${API_KEY}&quot; --data-binary
 </li>
             
             <li>
-  <a href="/categories/#Blog-ref">Blog <span>6</span></a>
+  <a href="/categories/#Blog-ref">Blog <span>8</span></a>
 </li>
             
         </ul>
