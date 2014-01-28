@@ -10,7 +10,7 @@ var P = "SOCKS5 127.0.0.1:7000; SOCKS 127.0.0.1:7000; PROXY 127.0.0.1:8000; DIRE
 // user rules
 var directUserRegexpList   = [];
 var directUserWildcardList = [
- 		'maps.google.com',
+ 	'maps.google.com',
     '*sina.com*',
     '*163.com*'
     ];
