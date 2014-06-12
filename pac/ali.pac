@@ -1,20 +1,23 @@
 /**
  * gfwlist2pac 0.0.1 http://codelife.me
- * Generated: Thu, 12 Jun 2014 01:37:10 GMT
- * GFWList Last-Modified: Wed, 21 May 2014 12:22:01 GMT
+ * Generated: Sun, 26 Jan 2014 09:17:54 GMT
+ * GFWList Last-Modified: Thu, 23 Jan 2014 04:15:28 GMT
  */
 
 // proxy
-var P = "SOCKS5 127.0.0.1:7000; SOCKS 127.0.0.1:7000; PROXY 127.0.0.1:8000; DIRECT";
+var P = "PROXY 10.23.8.125:3128; DIRECT";
 
 // user rules
 var directUserRegexpList   = [];
 var directUserWildcardList = [
+ 	'maps.google.com',
     '*sina.com*',
     '*163.com*'
     ];
+
 var proxyUserRegexpList    = [];
 var proxyUserWildcardList  = [
+    '*google.com*',
     '*twitter.com*',
     '*youtube.com*'
     ];
@@ -142,7 +145,6 @@ var directRegexpList   = [
     ];
 var directWildcardList = [];
 var proxyRegexpList    = [
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?darpa\.mil',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fxnetworks\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?muzu\.tv',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?netflix\.com',
@@ -177,7 +179,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?7capture\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?881903\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?89-64\.org',
-    '^http://908taiwan\.org/',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?9bis\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?9bis\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?a-normal-day\.com',
@@ -291,6 +292,8 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?breakingtweets\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?brightkite\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?brizzly\.com',
+    '^https://.*\.broadcasthe\.net',
+    '^https://broadcasthe\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?bt95\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?budaedu\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?bullog\.org',
@@ -447,7 +450,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?dwnews\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?dynawebinc\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?e-gold\.com',
-    '^http://g\.e-hentai\.org/',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?edubridge\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?eevpn\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?eic-av\.com',
@@ -471,9 +473,9 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?eyevio\.jp',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?facebook\.com',
     '^https?:\/\/[^\/]+facebook\.com',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?connect\.facebook\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?github\.com',
     '^https?:\/\/[^\/]+github\.com',
+    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?connect\.facebook\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?facesofnyfw\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?faiththedog\.info',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?falunhr\.org',
@@ -483,7 +485,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?famunion\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fangbinxing\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fanswong\.com',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fastly\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?favorious\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?faststone\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?favstar\.fm',
@@ -498,7 +499,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?finalion\.jp',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fireofliberty\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?falsefire\.com',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?farm6\.staticflickr\.com',
     '^http://cn\.fmnnow\.com',
     '^http://4sq\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fotop\.net',
@@ -512,7 +512,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?fqrouter\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?franklc\.com',
     '^http://freakshare\.com',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?free4u\.com\.ar',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?allonlinux\.free\.fr',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?dimitrik\.free\.fr',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?puttycm\.free\.fr',
@@ -555,7 +554,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?geometrictools\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?get-digital-help\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?getfoxyproxy\.org',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?getlantern\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?ggssl\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?giga-web\.jp',
     '^http://cn\.giganews\.com/',
@@ -565,7 +563,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?globalrescue\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?globalvoicesonline\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?gmhz\.org',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?goagent\.biz',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?godfootsteps\.org',
     '^http://www\.goldenmelody\.com\.tw',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?goldwave\.com',
@@ -573,7 +570,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?goodreaders\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?goofind\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?googleusercontent\.com',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?googlevideo\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?gopetition\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?gotw\.ca/',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?graphis\.ne\.jp',
@@ -660,14 +656,12 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hnjhj\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?holyspiritspeaks\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?derekhsu\.homeip\.net',
-    '^http://homeservershow\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hongzhi\.li',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hootsuite\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hotspotshield\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hougaige\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?howtoforge\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hqcdp\.org',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hrichina\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?hsjp\.net',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?htmldog\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?huanghuagang\.org',
@@ -810,7 +804,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?lvhai\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?mh4u\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?mad-ar\.ch',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?marc\.info',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?martincartoons\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?makemymood\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?marines\.mil',
@@ -937,6 +930,8 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?paper-replika\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?eriversoft\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?panluan\.net',
+    '^https://passthepopcorn\.me/',
+    '^https://.*\.passthepopcorn\.me/',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?pastie\.org',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?blog\.pathtosharepoint\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?pbworks\.com',
@@ -1093,7 +1088,6 @@ var proxyRegexpList    = [
     '^http://skyhighpremium\.com/',
     '^http://www\.skype\.com/intl/',
     '^http://www\.skype\.com/zh-Hant',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?xskywalker\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?slavasoft\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?slheng\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?so-ga\.net',
@@ -1161,7 +1155,6 @@ var proxyRegexpList    = [
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?techlifeweb\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?techparaiso\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?teck\.in/',
-    '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?telegraph\.co\.uk',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?theampfactory\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?theappleblog\.com',
     '^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?theatrum-belli\.com',
@@ -1764,8 +1757,6 @@ var proxyWildcardList  = [
     '*china21.org*',
     '*chinaaffairs.org*',
     '*chinaaid.us*',
-    '*chinaaid.org*',
-    '*chinaaid.net*',
     '*chinacomments.org*',
     '*chinachannel.hk*',
     '*.chinadigitaltimes.net*',
@@ -1782,7 +1773,6 @@ var proxyWildcardList  = [
     '*chinalawandpolicy.com*',
     '*.chinamule.com*',
     '*chinamz.org*',
-    '*.chinarightsia.org*',
     '*chinasocialdemocraticparty.com*',
     '*chinasoul.org*',
     '*chinatimes.com*',
@@ -1954,7 +1944,6 @@ var proxyWildcardList  = [
     '*.fan-qiang.com*',
     '*.fangbinxing.com*',
     '*fangeming.com*',
-    '*.fanyue.info*',
     '*.farwestchina.com*',
     '*favorious.com*',
     '*en.favotter.net*',
@@ -2056,7 +2045,6 @@ var proxyWildcardList  = [
     '*geocities.jp*',
     '*.getchu.com*',
     '*.getfreedur.com*',
-    '*.getlantern.org*',
     '*.getjetso.com/forum*',
     '*getiton.com*',
     '*.getsocialscope.com*',
@@ -2312,7 +2300,6 @@ var proxyWildcardList  = [
     '*gospelherald.com*',
     '*greatfire.org*',
     '*greatfirewallofchina.org*',
-    '*.theguardian.co*',
     '*guishan.org*',
     '*.gyalwarinpoche.com*',
     '*h1n1china.org*',
@@ -2348,7 +2335,6 @@ var proxyWildcardList  = [
     '*.hkej.com/template/forum*',
     '*.hkepc.com/forum/viewthread.php?tid=1153322*',
     '*global.hkepc.com*forum*',
-    '*hkfront.org*',
     '*hkgolden.com*',
     '*.hkgreenradio.org/home*',
     '*.hkheadline.com*blog*',
@@ -2367,7 +2353,7 @@ var proxyWildcardList  = [
     '*hotpot.hk*',
     '*.hqcdp.org*',
     '*.hrcir.com*',
-    '*.hrichina.org*',
+    '*hrichina.org*',
     '*.hrw.org*',
     '*huaglad.com*',
     '*.huanghuagang.org*',
@@ -2381,7 +2367,6 @@ var proxyWildcardList  = [
     '*iask.bz*',
     '*ibiblio.org/pub/packages/ccic*',
     '*blogs.icerocket.com/tag*',
-    '*.icij.org*',
     '*w.idaiwan.com/forum*',
     '*.identi.ca*',
     '*.idouga.com*',
@@ -2420,6 +2405,14 @@ var proxyWildcardList  = [
     '*.iu45.com*',
     '*.izaobao.us*',
     '*.izles.net*',
+    '*itunes.apple.*285688934*',
+    '*itunes.apple.*358801284*',
+    '*itunes.apple.*375584677*',
+    '*itunes.apple.*383949089*',
+    '*itunes.apple.*319295332*',
+    '*itunes.apple.*418987775*',
+    '*itunes.apple.com/us*id447119634*',
+    '*.apple.*isunaffairs*',
     '*blog.jackjia.com*',
     '*jbtalks.cc*',
     '*jbtalks.com*',
@@ -2639,7 +2632,6 @@ var proxyWildcardList  = [
     '*ntdtv.ru*',
     '*.nuvid.com*',
     '*nuzcom.com*',
-    '*.nydus.ca*',
     '*.nytimes.com*',
     '*nysingtao.com*',
     '*observechina.net*',
@@ -2794,6 +2786,7 @@ var proxyWildcardList  = [
     '*.readingtimes.com.tw*',
     '*.realraptalk.com*',
     '*.recordhistory.org*',
+    '*blog.redren.com/2009/01/jap-let-you-use-online-stealth*',
     '*.redtube.com*',
     '*referer.us*',
     '*relaxbbs.com*',
@@ -2908,7 +2901,6 @@ var proxyWildcardList  = [
     '*sis001.us*',
     '*bbs.skykiwi.com*',
     '*share.skype.com/sites/en/2008/10/skype_president_addresses_chin*',
-    '*.xskywalker.com*',
     '*m.slandr.net*',
     '*.slideshare.net*',
     '*forum.slime.com.tw*',
@@ -3275,7 +3267,6 @@ var proxyWildcardList  = [
     '*.xcritic.com*',
     '*destiny.xfiles.to/ubbthreads*',
     '*.xfm.pp.ru*',
-    '*xgmyd.com*',
     '*xh4n.cn/blog*',
     '*xhamster.com*',
     '*one.xthost.info*',
@@ -3813,7 +3804,6 @@ var proxyWildcardList  = [
     '*zh.wikipedia.org*%E4%B8%AD%E5%A4%AE%E8%AD%A6%E8%A1%9B%E5%B1%80*',
     '*zh.wikipedia.org*%E4%B8%AD%E5%A4%AE%E6%96%87%E5%8C%96%E9%9D%A9%E5%91%BD%E5%B0%8F%E7%BB%84*',
     '*zh.wikipedia.org*%E4%B8%AD%E8%8B%B1%E7%BA%8C%E8%A8%82%E8%97%8F%E5%8D%B0%E6%A2%9D%E7%B4%84*',
-    '*zh.wikipedia.org*%E5%91%A8%E6%BB%A8*',
     '*zh.wikipedia.org*%E5%91%A8%E6%B0%B8%E5%BA%B7*',
     '*zh.wikipedia.org*%E8%BD%AC%E6%B3%95%E8%BD%AE*',
     '*zh.wikipedia.org*%E8%87%AA%E7%94%B1%E9%97%A8*',
@@ -3829,13 +3819,13 @@ function FindProxyForURL(url, host) {
     var D = "DIRECT";
 
     var regExpMatch = function(url, pattern) {
-        try { 
-            return new RegExp(pattern).test(url); 
-        } catch(ex) { 
-            return false; 
+        try {
+            return new RegExp(pattern).test(url);
+        } catch(ex) {
+            return false;
         }
     };
-    
+
     var i = 0;
 
     for (i in directUserRegexpList) {
